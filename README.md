@@ -1,18 +1,19 @@
-## Getting Started
+# Bill Payment CLI
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Chức năng yêu cầu
+- Add Fund
+- CRUD Bill & search bill
+- Pay Bill(s) at the same time with available fund, prioritize by early due_date any time
+- Tracking due_date bills
+- View History Payment Transactions
+- Scheduled Bill payment, automatically do bill payment. Client could configure
 
-## Folder Structure
+## Giả định
+- Hệ thống chỉ phục vụ một customer trong một lần chạy chương trình (Nếu nhiều cần phải xử lý nhiều trường hợp có thể xảy ra, race conditions)
+- Không sử dụng DB, mọi dữ liệu trong phiên chạy sẽ bị xóa khi kết thúc chương trình
+- Số tiền là số nguyên dương, không có phí giao dịch
+- Khi thanh toán nhiều bill, hệ thống ưu tiên due date sớm hơn; nếu không đủ tiền cho toàn bộ danh sách thì không bill nào được thanh toán.
+- Scheduled payment sẽ chỉ chạy khi ứng dụng chạy, không chạy ngầm ngay cả khi ứng dụng tắt. Để kiểm tra tự động thanh toán theo hạn, thay đổi ngày trên máy theo ngày thiết lập thanh toán của bill.
+- Ngày tháng sử dụng một format thống nhất: `dd/MM/yyyy`.
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Usage
