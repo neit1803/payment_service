@@ -6,6 +6,7 @@ import com.momo.domain.vo.Money;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public final class BillService {
@@ -63,6 +64,26 @@ public final class BillService {
             }
         }
         return matched;
+    }
+
+    public List<Bill> dueDateBills() {
+        List<Bill> dueBills = new ArrayList<Bill>();
+        for (Bill bill : bills) {
+            if (bill.state() == BillState.NOT_PAID) {
+                dueBills.add(bill);
+            }
+        }
+        Collections.sort(dueBills, new Comparator<Bill>() {
+            @Override
+            public int compare(Bill left, Bill right) {
+                int byDate = left.dueDate().compareTo(right.dueDate());
+                if (byDate != 0) {
+                    return byDate;
+                }
+                return Integer.compare(left.id(), right.id());
+            }
+        });
+        return dueBills;
     }
 
     private int indexOf(int id) {
