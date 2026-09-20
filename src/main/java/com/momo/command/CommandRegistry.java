@@ -3,6 +3,7 @@ package com.momo.command;
 import com.momo.command.Impl.AddFundCommand;
 import com.momo.command.Impl.CreateBillCommand;
 import com.momo.command.Impl.ExitCommand;
+import com.momo.command.Impl.ListBillCommand;
 import com.momo.service.AccountService;
 import com.momo.service.BillService;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public final class CommandRegistry {
         commands.put("CASH_IN", addFundCommand);
         commands.put("ADD_FUND", addFundCommand);
         commands.put("CREATE_BILL", new CreateBillCommand(billService));
+        commands.put("LIST_BILL", new ListBillCommand(billService));
         commands.put("EXIT", new ExitCommand());
         return commands;
     }
