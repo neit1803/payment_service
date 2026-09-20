@@ -1,31 +1,33 @@
 package com.momo.domain.entity;
 
-
-import java.math.BigDecimal;
+import com.momo.domain.vo.Money;
 import java.util.Objects;
 
 public final class Account {
     private final int id;
-    private final BigDecimal balance;
-    
-    public Account(int id, BigDecimal balance) {
+    private final Money balance;
+
+    public Account(int id, Money balance) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Account id must be positive");
+        }
         this.id = id;
-        this.balance = Objects.requireNonNull(balance);
+        this.balance = Objects.requireNonNull(balance, "balance");
     }
 
-    public int getId() {
+    public int id() {
         return id;
     }
 
-    public BigDecimal getBalance() {
+    public Money balance() {
         return balance;
     }
 
-    public Account withDraw(BigDecimal fund) {
-        return new Account(id, fund);
+    public Account credit(Money amount) {
+        return new Account(id, balance.plus(amount));
     }
 
-    public Account debit(BigDecimal fund) {
-        return new Account(id, fund);
+    public Account debit(Money amount) {
+        return new Account(id, balance.minus(amount));
     }
 }
