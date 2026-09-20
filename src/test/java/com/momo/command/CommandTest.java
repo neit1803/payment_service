@@ -13,6 +13,7 @@ public final class CommandTest {
         rejectsUpdatingPaidBill();
         deletesUnpaidBill();
         rejectsDeletingPaidBill();
+        searchesBillByProvider();
         exitsApplication();
         System.out.println("PASS CommandTest");
     }
@@ -79,6 +80,20 @@ public final class CommandTest {
 
         assertLines(result.lines(), "Only unpaid bills can be deleted");
         assertEquals(1, billService.listBills().size());
+    }
+
+    private static void searchesBillByProvider() {
+        CliAdapter adapter = adapter();
+        adapter.execute(CommandLine.parse("CREATE_BILL ELECTRIC 200000 25/10/2020 EVN HCMC"));
+        adapter.execute(CommandLine.parse("CREATE_BILL WATER 175000 30/10/2020 SAVACO HCMC"));
+        adapter.execute(CommandLine.parse("CREATE_BILL INTERNET 800000 30/11/2020 VNPT"));
+
+        List<String> bills = adapter.execute(CommandLine.parse("SEARCH_BILL_BY_PROVIDER hcmc")).lines();
+
+        assertEquals(3, bills.size());
+        assertEquals("Bill No. Type Amount Due Date State PROVIDER", bills.get(0));
+        assertEquals("1. ELECTRIC 200000 25/10/2020 NOT_PAID EVN HCMC", bills.get(1));
+        assertEquals("2. WATER 175000 30/10/2020 NOT_PAID SAVACO HCMC", bills.get(2));
     }
 
     private static void exitsApplication() {

@@ -54,6 +54,17 @@ public final class BillService {
         return Collections.unmodifiableList(bills);
     }
 
+    public List<Bill> searchByProvider(String provider) {
+        String keyword = requireText(provider, "provider").toLowerCase();
+        List<Bill> matched = new ArrayList<Bill>();
+        for (Bill bill : bills) {
+            if (bill.provider().toLowerCase().contains(keyword)) {
+                matched.add(bill);
+            }
+        }
+        return matched;
+    }
+
     private int indexOf(int id) {
         for (int i = 0; i < bills.size(); i++) {
             if (bills.get(i).id() == id) {
@@ -61,5 +72,12 @@ public final class BillService {
             }
         }
         throw new IllegalArgumentException("Bill not found");
+    }
+
+    private static String requireText(String value, String field) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException(field + " is required");
+        }
+        return value.trim();
     }
 }
