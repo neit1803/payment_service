@@ -1,7 +1,9 @@
-package com.momo.payment_service;
+package com.momo;
+
+import com.momo.utils.Shell;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        new Shell(args, System.out).run();
     }
 }
