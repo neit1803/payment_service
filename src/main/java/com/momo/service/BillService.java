@@ -20,7 +20,37 @@ public final class BillService {
         return bill;
     }
 
+    public Bill updateBill(int id, String type, Money amount, LocalDate dueDate, String provider) {
+        int index = indexOf(id);
+        Bill current = bills.get(index);
+        if (current.state() != BillState.NOT_PAID) {
+            throw new IllegalArgumentException("Only unpaid bills can be updated");
+        }
+
+        Bill updated = new Bill(current.id(), current.accountId(), type, amount, dueDate, current.state(), provider);
+        bills.set(index, updated);
+        return updated;
+    }
+
+    public Bill markPaid(int id) {
+        int index = indexOf(id);
+        Bill current = bills.get(index);
+        Bill paid = new Bill(current.id(), current.accountId(), current.type(), current.amount(), current.dueDate(),
+                BillState.PAID, current.provider());
+        bills.set(index, paid);
+        return paid;
+    }
+
     public List<Bill> listBills() {
         return Collections.unmodifiableList(bills);
+    }
+
+    private int indexOf(int id) {
+        for (int i = 0; i < bills.size(); i++) {
+            if (bills.get(i).id() == id) {
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("Bill not found");
     }
 }

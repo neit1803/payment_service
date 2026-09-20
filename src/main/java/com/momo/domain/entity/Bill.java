@@ -42,6 +42,10 @@ public final class Bill {
         return id;
     }
 
+    public int accountId() {
+        return accountId;
+    }
+
     public String type() {
         return type;
     }

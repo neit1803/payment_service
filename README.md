@@ -12,6 +12,7 @@
 - Hệ thống chỉ phục vụ một customer trong một lần chạy chương trình (Nếu nhiều cần phải xử lý nhiều trường hợp có thể xảy ra, race conditions)
 - Không sử dụng DB, mọi dữ liệu trong phiên chạy sẽ bị xóa khi kết thúc chương trình
 - Số tiền là số nguyên dương, không có phí giao dịch
+- Chỉ được cập nhật Bill nếu bill đó chưa được thanh toán
 - Khi thanh toán nhiều bill, hệ thống ưu tiên due date sớm hơn; nếu không đủ tiền cho toàn bộ danh sách thì không bill nào được thanh toán.
 - Scheduled payment sẽ chỉ chạy khi ứng dụng chạy, không chạy ngầm ngay cả khi ứng dụng tắt. Để kiểm tra tự động thanh toán theo hạn, thay đổi ngày trên máy theo ngày thiết lập thanh toán của bill.
 - Ngày tháng sử dụng một format thống nhất: `dd/MM/yyyy`.
