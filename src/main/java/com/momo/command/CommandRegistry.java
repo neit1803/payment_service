@@ -6,6 +6,7 @@ import com.momo.command.Impl.DeleteBillCommand;
 import com.momo.command.Impl.DueDateCommand;
 import com.momo.command.Impl.ExitCommand;
 import com.momo.command.Impl.ListBillCommand;
+import com.momo.command.Impl.PayCommand;
 import com.momo.command.Impl.SearchBillByProviderCommand;
 import com.momo.command.Impl.UpdateBillCommand;
 import com.momo.service.AccountService;
@@ -36,6 +37,7 @@ public final class CommandRegistry {
         commands.put("LIST_BILL", new ListBillCommand(billService));
         commands.put("SEARCH_BILL_BY_PROVIDER", new SearchBillByProviderCommand(billService));
         commands.put("DUE_DATE", new DueDateCommand(billService));
+        commands.put("PAY", new PayCommand(accountService, billService));
         commands.put("EXIT", new ExitCommand());
         return commands;
     }

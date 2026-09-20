@@ -42,6 +42,28 @@ public final class BillService {
         return paid;
     }
 
+    public List<Bill> unpaidBillsByIds(List<Integer> ids) {
+        List<Bill> selected = new ArrayList<Bill>();
+        for (Integer id : ids) {
+            Bill bill = billById(id.intValue());
+            if (bill.state() != BillState.NOT_PAID) {
+                throw new IllegalArgumentException("Bill with id " + bill.id() + " has already been paid");
+            }
+            selected.add(bill);
+        }
+        Collections.sort(selected, new Comparator<Bill>() {
+            @Override
+            public int compare(Bill left, Bill right) {
+                int byDate = left.dueDate().compareTo(right.dueDate());
+                if (byDate != 0) {
+                    return byDate;
+                }
+                return Integer.compare(left.id(), right.id());
+            }
+        });
+        return selected;
+    }
+
     public void deleteBill(int id) {
         int index = indexOf(id);
         Bill current = bills.get(index);
@@ -93,6 +115,10 @@ public final class BillService {
             }
         }
         throw new IllegalArgumentException("Bill not found");
+    }
+
+    private Bill billById(int id) {
+        return bills.get(indexOf(id));
     }
 
     private static String requireText(String value, String field) {

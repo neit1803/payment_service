@@ -15,6 +15,11 @@ public final class AccountService {
         return account.balance();
     }
 
+    public Money deduct(Money amount) {
+        account = account.debit(amount);
+        return account.balance();
+    }
+
     public Money balance() {
         return account.balance();
     }
