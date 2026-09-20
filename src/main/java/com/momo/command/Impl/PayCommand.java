@@ -5,6 +5,7 @@ import com.momo.domain.entity.Bill;
 import com.momo.domain.vo.Money;
 import com.momo.service.AccountService;
 import com.momo.service.BillService;
+import com.momo.service.PaymentService;
 import com.momo.utils.CommandResult;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,10 +15,16 @@ import java.util.Set;
 public final class PayCommand implements CommandHandler {
     private final AccountService accountService;
     private final BillService billService;
+    private final PaymentService paymentService;
 
     public PayCommand(AccountService accountService, BillService billService) {
+        this(accountService, billService, new PaymentService());
+    }
+
+    public PayCommand(AccountService accountService, BillService billService, PaymentService paymentService) {
         this.accountService = accountService;
         this.billService = billService;
+        this.paymentService = paymentService;
     }
 
     @Override
@@ -42,7 +49,8 @@ public final class PayCommand implements CommandHandler {
         accountService.deduct(total);
         List<String> lines = new ArrayList<String>();
         for (Bill bill : bills) {
-            billService.markPaid(bill.id());
+            Bill paidBill = billService.markPaid(bill.id());
+            paymentService.recordProcessed(paidBill);
             lines.add("Payment has been completed for Bill with id " + bill.id() + ".");
         }
         lines.add("Your current balance is: " + accountService.balance());

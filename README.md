@@ -17,4 +17,5 @@
 - Scheduled payment sẽ chỉ chạy khi ứng dụng chạy, không chạy ngầm ngay cả khi ứng dụng tắt. Để kiểm tra tự động thanh toán theo hạn, thay đổi ngày trên máy theo ngày thiết lập thanh toán của bill.
 - Ngày tháng sử dụng một format thống nhất: `dd/MM/yyyy`.
 
-## Usage
+## Chức năng chưa hoàn thành
+- Schedule bill payment
