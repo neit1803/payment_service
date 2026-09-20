@@ -41,6 +41,15 @@ public final class BillService {
         return paid;
     }
 
+    public void deleteBill(int id) {
+        int index = indexOf(id);
+        Bill current = bills.get(index);
+        if (current.state() != BillState.NOT_PAID) {
+            throw new IllegalArgumentException("Only unpaid bills can be deleted");
+        }
+        bills.remove(index);
+    }
+
     public List<Bill> listBills() {
         return Collections.unmodifiableList(bills);
     }

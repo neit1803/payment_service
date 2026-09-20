@@ -11,6 +11,8 @@ public final class CommandTest {
         supportsMainCliFlow();
         updatesUnpaidBill();
         rejectsUpdatingPaidBill();
+        deletesUnpaidBill();
+        rejectsDeletingPaidBill();
         exitsApplication();
         System.out.println("PASS CommandTest");
     }
@@ -53,6 +55,30 @@ public final class CommandTest {
 
         assertLines(result.lines(), "Only unpaid bills can be updated");
         assertEquals("175000", billService.listBills().get(0).amount().toString());
+    }
+
+    private static void deletesUnpaidBill() {
+        CliAdapter adapter = adapter();
+        adapter.execute(CommandLine.parse("CREATE_BILL WATER 175000 30/10/2020 SAVACO HCMC"));
+
+        CommandResult result = adapter.execute(CommandLine.parse("DELETE_BILL 1"));
+        List<String> bills = adapter.execute(CommandLine.parse("LIST_BILL")).lines();
+
+        assertLines(result.lines(), "Bill with id 1 has been deleted.");
+        assertEquals(1, bills.size());
+        assertEquals("Bill No. Type Amount Due Date State PROVIDER", bills.get(0));
+    }
+
+    private static void rejectsDeletingPaidBill() {
+        BillService billService = new BillService();
+        CliAdapter adapter = new CliAdapter(CommandRegistry.withServices(new AccountService(), billService));
+        adapter.execute(CommandLine.parse("CREATE_BILL WATER 175000 30/10/2020 SAVACO HCMC"));
+        billService.markPaid(1);
+
+        CommandResult result = adapter.execute(CommandLine.parse("DELETE_BILL 1"));
+
+        assertLines(result.lines(), "Only unpaid bills can be deleted");
+        assertEquals(1, billService.listBills().size());
     }
 
     private static void exitsApplication() {

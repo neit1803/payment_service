@@ -2,6 +2,7 @@ package com.momo.command;
 
 import com.momo.command.Impl.AddFundCommand;
 import com.momo.command.Impl.CreateBillCommand;
+import com.momo.command.Impl.DeleteBillCommand;
 import com.momo.command.Impl.ExitCommand;
 import com.momo.command.Impl.ListBillCommand;
 import com.momo.command.Impl.UpdateBillCommand;
@@ -29,6 +30,7 @@ public final class CommandRegistry {
         commands.put("ADD_FUND", addFundCommand);
         commands.put("CREATE_BILL", new CreateBillCommand(billService));
         commands.put("UPDATE_BILL", new UpdateBillCommand(billService));
+        commands.put("DELETE_BILL", new DeleteBillCommand(billService));
         commands.put("LIST_BILL", new ListBillCommand(billService));
         commands.put("EXIT", new ExitCommand());
         return commands;
